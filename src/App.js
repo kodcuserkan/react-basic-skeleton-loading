@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Post from "./components/post";
-import Skeleton from "./components/skeleton";
+import MySkeleton from "./components/skeleton";
+import Skeleton from "react-loading-skeleton";
 function App() {
   const [posts, setposts] = useState([]);
   const [author, setauthor] = useState([]);
@@ -25,7 +26,7 @@ function App() {
     }, 5000);
   }, []);
 
-  console.log(posts, author);
+  // console.log(posts, author);
 
   return (
     <div className="App">
@@ -35,12 +36,25 @@ function App() {
       <div className="content">
         <div className="left">
           {posts.length < 1 ? (
-            <Skeleton count={5} />
+            <MySkeleton count={5} />
           ) : (
             posts.map((p, i) => <Post key={i} post={p} />)
           )}
         </div>
-        <div className="right"></div>
+        <div className="right">
+          <div className="single-post">
+            {author?.title ? (
+              <h2>{"Title: " + author.title} </h2>
+            ) : (
+              <Skeleton style={{height: '30px', marginBottom: '50px'}} />
+            )}
+            {author?.body ? (
+              "Body: " + author.body.slice(0,70)
+            ) : (
+              <Skeleton count={2} />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
